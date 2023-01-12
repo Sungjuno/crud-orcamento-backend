@@ -7,46 +7,46 @@ using MySqlConnector;
 
 namespace crud_orcamento.Controllers
 {
-	[Route("pessoafisica")]
-	public class PessoaFisicaController : ControllerBase
+	[Route("pessoajuridica")]
+	public class PessoaJuridicaController : ControllerBase
 	{
-		private OrcamentoContext _pessoaFisica;
+		private OrcamentoContext _pessoaJuridica;
 
-        public PessoaFisicaController(OrcamentoContext pessoaFisica)
-        {
-            _pessoaFisica = pessoaFisica;
-        }
+		public PessoaJuridicaController(OrcamentoContext pessoaJuridica)
+		{
+			_pessoaJuridica = pessoaJuridica;
+		}
 
         [HttpGet("")]
-        public IEnumerable<PessoaFisica> Index()
+        public IEnumerable<PessoaJuridica> Index()
         {
-            return _pessoaFisica.PessoasFisicas;
+            return _pessoaJuridica.PessoasJuridicas;
         }
 
         [HttpGet("{id}")]
-        public PessoaFisica? RecuperaPorId(int id)
+        public PessoaJuridica? RecuperaPorId(int id)
         {
-            return _pessoaFisica.PessoasFisicas.FirstOrDefault(pf => pf.Id == id);
+            return _pessoaJuridica.PessoasJuridicas.FirstOrDefault(pf => pf.Id == id);
         }
 
         [HttpPost("")]
-        public IActionResult Create([FromBody] PessoaFisicaDTO pessoaFisicaDTO)
-        {
+        //public IActionResult Create([FromBody] PessoaFisicaDTO pessoaFisicaDTO)
+        //{
 
-            PessoaFisica pessoaFisica = new PessoaFisica
-            {
-                Nome = pessoaFisicaDTO.Nome,
-                Telefone = pessoaFisicaDTO.Telefone,
-                CPF = pessoaFisicaDTO.CPF,
-            };
+        //    PessoaJuridica pessoaJuridica = new PessoaJuridica
+        //    {
+        //        Nome = pessoaFisicaDTO.Nome,
+        //        Telefone = pessoaFisicaDTO.Telefone,
+        //        CPF = pessoaFisicaDTO.CPF,
+        //    };
 
-            _pessoaFisica.PessoasFisicas.Add(pessoaFisica);
-            _pessoaFisica.SaveChanges();
-            return StatusCode(200, pessoaFisica);
-        }
+        //    _pessoaFisica.PessoasFisicas.Add(pessoaFisica);
+        //    _pessoaFisica.SaveChanges();
+        //    return StatusCode(200, pessoaFisica);
+        //}
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromRoute]int id,[FromBody]PessoaFisica pessoaFisica)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] PessoaFisica pessoaFisica)
         {
             using (var conn = new MySqlConnection("Server=localhost;Database=OrcamentoDatabase;Uid=root;Pwd=sung87ju;"))
             {
@@ -68,12 +68,13 @@ namespace crud_orcamento.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete([FromRoute] int id)
         {
-           var pf = _pessoaFisica.PessoasFisicas.FirstOrDefault(pf => pf.Id == id);
-            if (pf == null) return NotFound();
-            _pessoaFisica.Remove(pf);
-            _pessoaFisica.SaveChanges();
+            var pj = _pessoaJuridica.PessoasJuridicas.FirstOrDefault(pj => pj.Id == id);
+            if (pj == null) return NotFound();
+            _pessoaJuridica.Remove(pj);
+            _pessoaJuridica.SaveChanges();
             return StatusCode(204);
         }
+
     }
 }
 
